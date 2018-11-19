@@ -1,0 +1,145 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Cliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
+  `id` INT NOT NULL,
+  `nome` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(20) NOT NULL,
+  `nome_utilizador` VARCHAR(30) NOT NULL,
+  `nif` INT NOT NULL,
+  `email` VARCHAR(30) NOT NULL,
+  `telemovel` INT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Funcionario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Funcionario` (
+  `id` INT NOT NULL,
+  `nome` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Pedido`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Pedido` (
+  `id` INT NOT NULL,
+  `data` DATETIME NOT NULL,
+  `valor_total` DECIMAL(8,2) NOT NULL,
+  `tempo` INT NOT NULL,
+  `pago` TINYINT NOT NULL,
+  `Cliente_id` INT NOT NULL,
+  `Funcionario_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Pedido_Cliente1_idx` (`Cliente_id` ASC) VISIBLE,
+  INDEX `fk_Pedido_Funcionario1_idx` (`Funcionario_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Pedido_Cliente1`
+    FOREIGN KEY (`Cliente_id`)
+    REFERENCES `mydb`.`Cliente` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Pedido_Funcionario1`
+    FOREIGN KEY (`Funcionario_id`)
+    REFERENCES `mydb`.`Funcionario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Gelado`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Gelado` (
+  `id` INT NOT NULL,
+  `nome` VARCHAR(30) NOT NULL,
+  `descricao` VARCHAR(100) NOT NULL,
+  `valor_nutricional` INT NOT NULL,
+  `composicao` VARCHAR(100) NOT NULL,
+  `preco` DECIMAL(8,2) NOT NULL,
+  `desconto` FLOAT NOT NULL,
+  `stock` INT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Extra`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Extra` (
+  `id` INT NOT NULL,
+  `nome` VARCHAR(30) NOT NULL,
+  `composicao` VARCHAR(100) NOT NULL,
+  `preco` DECIMAL(8,2) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`PedidoGelado`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`PedidoGelado` (
+  `id_pedido` INT NOT NULL,
+  `id_gelado` INT NOT NULL,
+  `preco` DECIMAL(8,2) NOT NULL,
+  `quantidade` INT NOT NULL,
+  PRIMARY KEY (`id_pedido`, `id_gelado`),
+  INDEX `fk_PedidoGelado_Gelado1_idx` (`id_gelado` ASC) VISIBLE,
+  CONSTRAINT `fk_PedidoGelado_Pedido`
+    FOREIGN KEY (`id_pedido`)
+    REFERENCES `mydb`.`Pedido` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PedidoGelado_Gelado1`
+    FOREIGN KEY (`id_gelado`)
+    REFERENCES `mydb`.`Gelado` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`GeladoExtra`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`GeladoExtra` (
+  `id_gelado` INT NOT NULL,
+  `id_extra` INT NOT NULL,
+  `quantidade` INT NOT NULL,
+  PRIMARY KEY (`id_gelado`, `id_extra`),
+  INDEX `fk_GeladoExtra_Extra1_idx` (`id_extra` ASC) VISIBLE,
+  CONSTRAINT `fk_GeladoExtra_Gelado1`
+    FOREIGN KEY (`id_gelado`)
+    REFERENCES `mydb`.`Gelado` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_GeladoExtra_Extra1`
+    FOREIGN KEY (`id_extra`)
+    REFERENCES `mydb`.`Extra` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
