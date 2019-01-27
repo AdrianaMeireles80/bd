@@ -1,0 +1,23 @@
+-- queries
+
+//first querie
+MATCH (p:Pedido)-[co:CONTEM]->(:Criacao_Gelado)-[:INCLUI_GELADO]->(gb:Gelado_Base)
+WITH apoc.date.parse(p.Data,'s','yyyy-MM-dd HH:mm:ss') AS date, apoc.date.parse('2015-06-01 00:00:00','s','yyyy-MM-dd HH:mm:ss') AS iDate, apoc.date.parse('2015-07-01 00:00:00','s','yyyy-MM-dd HH:mm:ss') AS fDate, gb.Nome AS name, co.Quantidade AS quantidade
+ORDER BY quantidade DESC
+WHERE date>iDate AND date<fDate
+RETURN name, sum(quantidade) as quantity
+LIMIT 3
+
+//second querie
+MATCH (:Pedido) -[:SUBMETIDO]-> (c:Cliente) 
+WITH apoc.date.parse(c.Data_Nascimento,'s','yyyy-MM-dd') as date
+MATCH (:Pedido) -[:SUBMETIDO]-> (c:Cliente) 
+RETURN c.Nif, c.Nome
+ORDER BY date
+LIMIT 1
+
+//third querie
+MATCH (f:Funcionario)<-[:PROCESSADO]-(:Pedido)-[co:CONTEM]->(:Criacao_Gelado)-[:INCLUI_GELADO]->(gb:Gelado_Base)
+WHERE gb.Nome = 'Gelado Morango'
+RETURN f.Nome AS func_nome, sum(co.Quantidade) as quantidade
+ORDER BY quantidade DESC

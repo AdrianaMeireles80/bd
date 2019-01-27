@@ -1,0 +1,33 @@
+-- merges
+
+//cliente merge pedido
+MATCH (c:Cliente)
+MATCH (p:Pedido)
+WHERE c.Nif = p.Nif
+MERGE (p) -[:SUBMETIDO]-> (c);
+
+//funcionario merge pedido
+MATCH (f:Funcionario)
+MATCH (p:Pedido)
+WHERE f.Id_Funcionario = p.Id_Funcionario
+MERGE (p) -[:PROCESSADO]-> (f);
+
+//gelado_base merge criacao_gelado
+MATCH (gb:Gelado_Base)
+MATCH (cg:Criacao_Gelado)
+WHERE gb.Id_Gelado = cg.Id_Gelado
+MERGE (cg) -[:INCLUI_GELADO]-> (gb);
+
+//extra merge criacao_gelado
+MATCH (e:Extra)
+MATCH (cge:Criacao_Gelado__Extra)
+MATCH (cg:Criacao_Gelado)
+WHERE e.Id_Extra = cge.Id_Extra AND cg.Id_Criacao = cge.Id_Criacao
+MERGE (cg) -[:INCLUI_EXTRA{Quantidade_Extra: cge.Quantidade_Extra}]-> (e);
+
+//criacao_gelado merge pedido
+MATCH (cg:Criacao_Gelado)
+MATCH (pcg:Pedido__Criacao_Gelado)
+MATCH (p:Pedido)
+WHERE cg.Id_Criacao = pcg.Id_Criacao AND pcg.Id_Pedido = p.Id_Pedido
+MERGE (p) -[:CONTEM{Quantidade: pcg.Quantidade}]-> (cg);

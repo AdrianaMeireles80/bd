@@ -1,0 +1,72 @@
+-- import .csv's to created nodes
+
+//cliente nodes
+USING PERIODIC COMMIT
+LOAD CSV FROM "file:///cliente.csv" AS line
+CREATE (c:Cliente { Nif: toInteger(line[0]),
+Nome: (line[1]),
+Password: (line[2]),
+Username: (line[3]),
+Email: (line[4]),
+Telefone: toInteger(line[5]),
+Data_Nascimento: (line[6])})
+
+//extra nodes
+USING PERIODIC COMMIT
+LOAD CSV FROM "file:///extra.csv" AS line
+CREATE (e:Extra {Id_Extra: toInteger(line[0]),
+Nome: (line[1]),
+Preco: toFloat(line[2]),
+Composicao: (line[3]),
+Stock: toInteger(line[4])})
+
+//gelado_base nodes
+USING PERIODIC COMMIT
+LOAD CSV FROM "file:///gelado_base.csv" AS line
+CREATE (g:Gelado_Base { Id_Gelado: toInteger(line[0]),
+Nome: (line[1]),
+Preco: toFloat(line[2]),
+Stock: toInteger(line[3]),
+Composicao: (line[4])})
+
+//funcionario nodes
+USING PERIODIC COMMIT
+LOAD CSV FROM "file:///funcionario.csv" AS line
+CREATE (f:Funcionario {Id_Funcionario: toInteger(line[0]), 
+Nome: (line[1]),
+Password: (line[2])})
+
+//criacao_gelado nodes
+USING PERIODIC COMMIT
+LOAD CSV FROM "file:///criacao_gelado.csv" AS line
+CREATE (cg:Criacao_Gelado { Id_Criacao: toInteger(line[0]),
+Valor: toFloat(line[1]),
+Id_Gelado: toInteger(line[2])})
+
+//criacao_gelado__extra nodes
+USING PERIODIC COMMIT
+LOAD CSV FROM "file:///criacao_gelado__extra.csv" AS line
+CREATE (cge:Criacao_Gelado__Extra {Id_Criacao: toInteger(line[0]),
+Id_Extra: toInteger(line[1]),
+Quantidade_Extra: toInteger(line[2])})
+
+//pedido__criacao_gelado nodes
+USING PERIODIC COMMIT
+LOAD CSV FROM "file:///pedido__criacao_gelado.csv" AS line
+CREATE (pcg:Pedido__Criacao_Gelado { Id_Pedido: toInteger(line[0]),
+Id_Criacao: toInteger(line[1]),
+Quantidade: toInteger(line[2])})
+
+//pedido nodes
+USING PERIODIC COMMIT
+LOAD CSV FROM "file:///pedido.csv" AS line
+CREATE (p:Pedido { Id_Pedido: toInteger(line[0]),
+Data: (line[1]),
+Valor_Total: toFloat(line[2]),
+Tempo: toInteger(line[3]),
+Pago: toInteger(line[4]),
+Recolhido: toInteger(line[5]),
+Desconto: toInteger(line[6]),
+Id_Funcionario: toInteger(line[7]),
+Nif: toInteger(line[8])})
+

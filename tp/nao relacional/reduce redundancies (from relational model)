@@ -1,0 +1,19 @@
+-- reduce redundancies (from relational model)
+
+//delete criacao_gelado__extra nodes
+MATCH (cge:Criacao_Gelado__Extra) 
+DELETE cge
+
+//delete pedido__criacao_gelado nodes
+MATCH (pcg:Pedido__Criacao_Gelado) 
+DELETE pcg
+
+//remove properties Id_Funcionario and Nif from Pedidos
+MATCH (p:Pedido) 
+REMOVE p.Id_Funcionario, p.Nif 
+RETURN p
+
+//remove property Id_Gelado from Criacao_Gelado's
+MATCH (cg:Criacao_Gelado) 
+REMOVE cg.Id_Gelado 
+RETURN cg

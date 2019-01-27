@@ -1,0 +1,24 @@
+-- indexes
+//cliente index
+CREATE INDEX ON :Cliente(Nif);
+
+//extra index
+CREATE INDEX ON :Extra(Id_Extra);
+
+//gelado_base index
+CREATE INDEX ON :Gelado_Base(Id_Gelado);
+
+//funcionario index
+CREATE INDEX ON :Funcionario(Id_Funcionario);
+
+//criacao_gelado index
+CREATE INDEX ON :Criacao_Gelado(Id_Criacao);
+
+//criacao_gelado__extra index
+CREATE INDEX ON :Criacao_Gelado__Extra(Id_Criacao);
+
+//pedido__criacao_gelado index
+CREATE INDEX ON :Pedido__Criacao_Gelado(Id_Pedido);
+
+//pedido index
+CREATE INDEX ON :Pedido(Id_Pedido);

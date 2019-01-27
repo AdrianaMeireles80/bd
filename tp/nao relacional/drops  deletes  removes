@@ -1,0 +1,29 @@
+-- drops / deletes / removes
+
+//drop cliente index
+DROP INDEX ON :Cliente(Nif)
+
+//drop extra index
+DROP INDEX ON :Extra(Id_Extra)
+
+//drop gelado_base index
+DROP INDEX ON :Gelado_Base(Id_Gelado)
+
+//drop funcionario index
+DROP INDEX ON :Funcionario(Id_Funcionario)
+
+//drop criacao_gelado index
+DROP INDEX ON :Criacao_Gelado(Id_Criacao)
+
+//drop criacao_gelado__extra index
+DROP INDEX ON :Criacao_Gelado__Extra(Id_Criacao)
+
+//drop pedido__criacao_gelado index
+DROP INDEX ON :Pedido__Criacao_Gelado(Id_Pedido)
+
+//drop pedido index
+DROP INDEX ON :Pedido(Id_Pedido)
+
+//delete all relationships
+START r=RELATIONSHIP(*) 
+DELETE r;
